@@ -103,6 +103,7 @@ Section numbers refer to `SPEC.md`.
 | H6 | Discovery gated on install | before connect: no head links; llms.txt and agent-card 404 | curl | 🔎 | |
 | H7 | llms.txt | instructions + all filters + 3 example URLs + notes | curl | 🔎 | |
 | H8 | agent-card.json | A2A-style fields, skills with GET templates, usage policy | curl | 🔎 | |
+| H9 | Second store site | `/sites/spice` matches DEMO_DATA; never has discovery links; its llms.txt and card always 404 | curl | 🔎 | |
 
 ## I. Agents
 
@@ -112,7 +113,8 @@ Section numbers refer to `SPEC.md`.
 | I2 | Concierge behaviour | never invents; 2–4 picks with price; pairing questions use pairings, not similar dishes; caveats for verified=false | chat: "what goes with the tikka masala?" | 🔎 | |
 | I3 | General assistant isolation | only fetch_url; knows nothing about Vecta; SSRF guard (own host only) | code + try external URL | 🔎 | |
 | I4 | Discovery behaviour | reads head links / llms.txt / card when present and prefers them; returns fetched URLs | /demo after install | 🔎 | |
-| I5 | Before/after difference | before: scrapes stale page (may offer sold-out / wrong price / no pairing); after: correct vegan main + house pairing | /demo twice | 🔎 | |
+| I5 | Two-store difference | same prompt, same agent: Spice Kitchen answer fails at least one fact-check (sold out / wrong price / diet guessed); Bistro answer passes all: available vegan main, correct price, approved side | /demo Ask both | 🔎 | |
+| I6 | Compare API + fact-check | `/api/compare` runs both in parallel; deterministic checks per SPEC §12.1 unit-tested on fixed replies; no extra model call; no extra help for the Bistro agent | tests + curl | 🔎 | |
 
 ## J. UIs
 
@@ -125,7 +127,7 @@ Section numbers refer to `SPEC.md`.
 | J5 | Bulk approve | high-confidence (≥0.8) pending only | visual + data | 🔎 | |
 | J6 | Live review | SSE adds rows as batches land; never clobbers an edit; poll fallback | watch during snapshot | 🔎 | |
 | J7 | Admin page | cards, tiles, runs table, live line + feed, links | visual during snapshot | 🔎 | |
-| J8 | Demo page | prompt, run cards with reply, time, fetched URLs | visual | 🔎 | |
+| J8 | Demo page | two columns, shared prompt, Ask both; each card: reply, seconds, fetched URLs, fact-check ticks; stacks under 768 px | visual | 🔎 | |
 | J9 | Chat page | concierge chat with 4 hint chips | visual | 🔎 | |
 
 ## K. Live progress (SSE)

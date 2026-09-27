@@ -342,6 +342,11 @@ merchant API token, then write the `installed` event).
 
 ### 9.6 Discovery for the demo restaurant (§12)
 `GET /sites/bistro`, `/sites/bistro/llms.txt`, `/sites/bistro/.well-known/agent-card.json`.
+`GET /sites/spice`: the second, website-only store (§12.1). It never has discovery links; its llms.txt and
+agent card are always 404.
+- `POST /api/compare {prompt}` → runs the general assistant on both sites **in parallel** with the same prompt
+  (`{site}` replaced per store) and returns `[{store, reply, seconds, fetched, checks}]`, where `checks` is
+  the deterministic fact-check of §12.1.
 
 ## 10. Frontend (React + TS, Clover-like look)
 
@@ -378,11 +383,14 @@ from SSE (`run` → "kind id: STATUS · cursor N · counts"; `item` → "time ·
 indexed / approved by merchant / pairings proposed", last 6), green dot when connected; debounced refresh
 1.5 s after events; safety refresh 60 s. Links: Review, Restaurant website, Agent demo.
 
-### 10.3 `/demo`: the pitch
-Title "Can a general AI assistant use this restaurant?" Prefilled prompt: *"I'm vegan, spend under $20,
-and don't like very spicy food. Using {site}, pick me a main course that's actually available tonight, and
-tell me what to order with it."* Each run is a card: reply, seconds taken, and **"What it fetched"** (URLs
-the agent chose). Run it before and after install.
+### 10.3 `/demo`: the pitch, two stores side by side
+Title "Can a general AI assistant order from these restaurants?" Two columns: **Demo Spice Kitchen**
+(website only) and **Vecta Demo Bistro** (on Vecta-what), with similar menus. One shared, editable prompt,
+prefilled: *"I'm vegan, spend under $20, and don't like very spicy food. Using {site}, pick me a main course
+that's actually available tonight, and tell me what to order with it."* One **Ask both** button calls
+`POST /api/compare`. Each column shows a card: reply, seconds taken, **"What it fetched"** (URLs the agent
+chose) and a **fact-check** list with a green tick or red cross per check (§12.1). Stack the columns on
+screens under 768 px. Same model, same agent, same prompt: the only difference is Vecta-what.
 
 ### 10.4 `/chat`: menu concierge
 Chat with hint chips: "What goes well with the tikka masala?", "Something vegan under $15 that isn't
@@ -434,6 +442,18 @@ Before that, both documents return **404**. When live (cache 5 min):
   `preferredTransport: HTTP+JSON`, default modes, `capabilities {streaming:false}`, `documentationUrl`,
   skills `search_menu` / `get_pairings` each with a GET template and an example, `x-usage-policy {auth:
   none for read access, rateLimit, maxResults: 8, bulkExport: not offered}`.
+
+### 12.1 The second store and the fact-check
+`/sites/spice` (Demo Spice Kitchen) is served verbatim from `DEMO_DATA.md`: a similar menu, equally stale,
+with no discovery placeholder. Its ground truth lives in code as a constant copied from `DEMO_DATA.md`; the
+Bistro's ground truth is our live catalog (Clover via Firestore). The fact-check is deterministic string
+matching on the reply, no extra model call:
+- **Available tonight**: no recommended item is sold out or out of stock.
+- **Correct price**: every price quoted for a named item matches the truth.
+- **Meets the diet**: every recommended main is vegan per the truth (verified, not guessed).
+- **Side suggested**: names a real, available side or drink to go with it.
+- **Sources**: the reply says where the facts came from.
+Keep the comparison fair: never give the Bistro agent extra instructions, tools or data.
 
 ## 13. Operations (operator does these; the app must not assume otherwise)
 - After the first Publish, on the Cloud Run service AI Studio created: `--no-cpu-throttling`,
@@ -491,8 +511,8 @@ and launch-path redirect (A2); webhook auth (C2); SSRF guard in fetch_url (I3).
    pairing; embeddings adapter; Firestore vector index adapter and the documented indexes. (F1–F3, F8–F9, G1–G2)
 6. **Review gate and search:** buildCatalogDoc, tag overlay, review API, public agent API + guard,
    pairings endpoint. (F4–F7, F10, G3–G5, H1–H4)
-7. **Discovery and agents:** stale site, llms.txt, agent card, concierge and general assistant with
-   fetch_url + SSRF guard. (H5–H8, I1–I5)
+7. **Discovery and agents:** both stale sites, llms.txt, agent card, concierge and general assistant with
+   fetch_url + SSRF guard, `/api/compare` with the fact-check. (H5–H9, I1–I6)
 8. **UIs and live progress:** review, admin, demo, chat, connect; SSE from Firestore listeners. (J1–J9, K1–K3)
 9. **Schedules and ops:** scheduler lease, hourly/daily staggered reconciles, per-merchant Gemini budget,
    metric logs, README runbook. (D8, L2–L5)

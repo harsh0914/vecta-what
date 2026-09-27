@@ -61,7 +61,7 @@ Keep the `<!--DISCOVERY-->` placeholder in `<head>`; it is replaced by discovery
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Vecta Demo Bistro Â· Berkeley</title>
+<title>Vecta Demo Bistro · Berkeley</title>
 <!--DISCOVERY-->
 <style>
   body { margin:0; font:17px/1.6 Georgia, serif; color:#2b2118; background:#fbf6ef; }
@@ -77,7 +77,7 @@ Keep the `<!--DISCOVERY-->` placeholder in `<head>`; it is replaced by discovery
 </style>
 </head>
 <body>
-<header><h1>Vecta Demo Bistro</h1><p>Indian-inspired kitchen &amp; global comfort food Â· 2299 Piedmont Ave, Berkeley</p></header>
+<header><h1>Vecta Demo Bistro</h1><p>Indian-inspired kitchen &amp; global comfort food · 2299 Piedmont Ave, Berkeley</p></header>
 <main>
 <p>Welcome! Our chefs bring together the spice markets of Delhi and the diners of California. Many dishes can be
 made vegetarian or vegan, just ask your server. Menu and prices subject to change; please call ahead for large parties.</p>
@@ -95,16 +95,16 @@ made vegetarian or vegan, just ask your server. Menu and prices subject to chang
 <div class="dish"><span>Quinoa Power Bowl</span><span>14.50</span></div>
 
 <h2>Mains</h2>
-<div class="dish"><span>Butter Chicken â˜… chef's special</span><span>19.50</span></div>
+<div class="dish"><span>Butter Chicken ★ chef's special</span><span>19.50</span></div>
 <div class="dish"><span>Paneer Tikka Masala</span><span>17.50</span></div>
 <div class="dish"><span>Chana Masala</span><span>15</span></div>
-<div class="dish"><span>Lamb Vindaloo ðŸŒ¶</span><span>23</span></div>
+<div class="dish"><span>Lamb Vindaloo 🌶</span><span>23</span></div>
 <div class="dish"><span>Smash Burger</span><span>17</span></div>
 <div class="dish"><span>Impossible Burger</span><span>18</span></div>
 <div class="dish"><span>Grilled Salmon, Lemon Herb</span><span>26</span></div>
 <div class="dish"><span>Mushroom Risotto</span><span>21</span></div>
 <div class="dish"><span>Pad Thai Tofu</span><span>16.50</span></div>
-<div class="dish"><span>Korean Fried Chicken Sandwich ðŸŒ¶ NEW!</span><span>16</span></div>
+<div class="dish"><span>Korean Fried Chicken Sandwich 🌶 NEW!</span><span>16</span></div>
 
 <h2>Breads &amp; Sides</h2>
 <div class="dish"><span>Garlic Naan</span><span>4</span></div>
@@ -117,12 +117,109 @@ made vegetarian or vegan, just ask your server. Menu and prices subject to chang
 <div class="dish"><span>Mango Sorbet</span><span>8</span></div>
 
 <h2>Drinks</h2>
-<p class="note">Mango Lassi Â· Masala Chai Â· Cold Brew Â· Sparkling Yuzu Lemonade Â· Spicy Margarita Â· Hazy IPA</p>
+<p class="note">Mango Lassi · Masala Chai · Cold Brew · Sparkling Yuzu Lemonade · Spicy Margarita · Hazy IPA</p>
 
 <p class="note">Please inform your server of any allergies. Gluten-free options available.</p>
 </main>
-<footer>Open Tueâ€“Sun 11:30â€“21:30 Â· (510) 555-0100</footer>
+<footer>Open Tue–Sun 11:30–21:30 · (510) 555-0100</footer>
 </body>
 </html>
 
+```
+
+# Second demo store: Demo Spice Kitchen (website only, NOT on Vecta-what)
+
+The control store: a neighbouring restaurant with a similar menu that has **not** installed Vecta-what, so an
+AI agent can only read its website. It is a real Clover sandbox merchant (same developer account, menu and
+stock below, loaded in the Clover dashboard) that has never installed our app, so it has no catalog in our
+database. Agents see only its static site at `/sites/spice`. The fact-check uses the table below as a
+constant; it mirrors what is in Clover.
+Both sites are equally ordinary and equally out of date. The only difference between the two stores is
+Vecta-what. Keep it that way: the comparison must be fair, not rigged.
+
+## Ground truth tonight (used only to fact-check agent answers on `/demo`)
+
+| Item | Real price | Real availability | Dietary (staff-confirmed) |
+|---|---|---|---|
+| Vegetable Samosas | 8.00 | available | Vegan |
+| Paneer Pakora | 10.00 | available | Vegetarian |
+| Lentil Soup | 9.00 | available | Vegan, GF |
+| Chana Masala | 14.00 | **sold out tonight** | Vegan, GF |
+| Aloo Gobi | 15.00 | available | Vegan, GF |
+| Baingan Bharta | 16.00 | available | Vegan, GF |
+| Palak Paneer | 17.00 | available | Vegetarian, GF |
+| Chicken Tikka Masala | 19.00 | available | GF |
+| Goat Curry | 24.00 | available | GF, very spicy |
+| Veggie Burger | 16.00 | **sold out tonight** | Vegetarian (contains egg and dairy) |
+| Tandoori Salmon | 25.00 | available | GF |
+| Plain Naan | 3.50 | available | Vegetarian (contains dairy) |
+| Basmati Rice | 4.50 | available | Vegan, GF |
+| Kheer | 7.00 | available | Vegetarian, GF |
+| Mango Lassi | 6.00 | available | Vegetarian |
+| Sweet Lime Soda | 5.00 | available | Vegan |
+
+Expected on `/demo` for the shared prompt: the website-only agent is likely to pick the sold-out Chana
+Masala or the Veggie Burger (not vegan), quote Aloo Gobi at the stale 13, and can only guess a side. The
+Vecta-what store answers Chana Masala 15 or Quinoa Power Bowl 14.50 (in stock, verified vegan, not spicy)
+with a merchant-approved side such as Tawa Roti or Jeera Rice.
+
+## The Spice Kitchen website, stale (serve verbatim at `/sites/spice`)
+
+No `<!--DISCOVERY-->` placeholder: this store never gets discovery links.
+
+```html
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Demo Spice Kitchen · Oakland</title>
+<style>
+  body { margin:0; font:17px/1.6 Georgia, serif; color:#1f2a24; background:#f4f7f2; }
+  header { background:#1f3a2b; color:#f4f7f2; padding:40px 20px; text-align:center; }
+  header h1 { margin:0; font-size:40px; letter-spacing:1px; }
+  header p { margin:6px 0 0; font-style:italic; opacity:.85; }
+  main { max-width:760px; margin:0 auto; padding:24px 20px 60px; }
+  h2 { border-bottom:1px solid #c9d6c3; padding-bottom:4px; margin-top:36px; }
+  .dish { display:flex; justify-content:space-between; gap:16px; margin:8px 0; }
+  .dish span:last-child { white-space:nowrap; }
+  .note { color:#4f5f55; font-size:15px; }
+  footer { text-align:center; color:#4f5f55; font-size:14px; padding:24px; }
+</style>
+</head>
+<body>
+<header><h1>Demo Spice Kitchen</h1><p>Home-style North Indian cooking · 4100 Telegraph Ave, Oakland</p></header>
+<main>
+<p>Family recipes, slow-cooked every day. Plenty of vegetarian choices. Ask about today's specials!</p>
+
+<h2>Starters</h2>
+<div class="dish"><span>Vegetable Samosas</span><span>7</span></div>
+<div class="dish"><span>Paneer Pakora</span><span>10</span></div>
+<div class="dish"><span>Lentil Soup</span><span>9</span></div>
+
+<h2>Curries</h2>
+<div class="dish"><span>Chana Masala ★ house favourite</span><span>14</span></div>
+<div class="dish"><span>Aloo Gobi</span><span>13</span></div>
+<div class="dish"><span>Baingan Bharta</span><span>16</span></div>
+<div class="dish"><span>Palak Paneer</span><span>17</span></div>
+<div class="dish"><span>Chicken Tikka Masala</span><span>19</span></div>
+<div class="dish"><span>Goat Curry 🌶🌶</span><span>24</span></div>
+
+<h2>Grill &amp; Burgers</h2>
+<div class="dish"><span>Veggie Burger NEW!</span><span>16</span></div>
+<div class="dish"><span>Tandoori Salmon</span><span>25</span></div>
+
+<h2>Sides &amp; Sweets</h2>
+<div class="dish"><span>Plain Naan</span><span>3.50</span></div>
+<div class="dish"><span>Basmati Rice</span><span>4.50</span></div>
+<div class="dish"><span>Kheer</span><span>7</span></div>
+
+<h2>Drinks</h2>
+<p class="note">Mango Lassi · Sweet Lime Soda · Chai</p>
+
+<p class="note">Vegetarian options marked by your server. Please ask about allergens.</p>
+</main>
+<footer>Open daily 12:00–22:00 · (510) 555-0199</footer>
+</body>
+</html>
 ```

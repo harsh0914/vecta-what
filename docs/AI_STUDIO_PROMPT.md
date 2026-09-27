@@ -34,7 +34,8 @@ Send one prompt per phase. After each, the validator grades the result against
    > findNearest adapter; print the gcloud index commands for my database id. Report F1–F3, F8–F9, G1–G2.
 6. > Phase 6 (review gate, search, public API). SPEC §6.6–§6.7, §7.3, §9.1–§9.2. Report F4–F7, F10,
    > G3–G5, H1–H4.
-7. > Phase 7 (discovery + agents). SPEC §11, §12. Stale site verbatim from DEMO_DATA.md. Report H5–H8, I1–I5.
+7. > Phase 7 (discovery + agents). SPEC §11, §12, §12.1. Both stale sites verbatim from DEMO_DATA.md,
+   > `/api/compare` with the deterministic fact-check. Report H5–H9, I1–I6.
 8. > Phase 8 (UIs + live progress). SPEC §10 and §9.5 SSE from Firestore listeners, Clover-like styling,
    > responsive to 375 px. Report J1–J9, K1–K3.
 9. > Phase 9 (schedules + ops). SPEC §5.3, metric logs, README runbook (Cloud Run flags, Clover URLs,
