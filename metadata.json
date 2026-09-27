@@ -1,0 +1,6 @@
+{
+  "name": "Vecta-what",
+  "description": "Make any small business's point-of-sale catalog usable by AI agents: one click, no code.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

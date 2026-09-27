@@ -1,0 +1,12 @@
+{
+  "projectId": "<projectId>",
+  "appId": "<appId>",
+  "apiKey": "<apiKey>",
+  "authDomain": "<authDomain>",
+  "firestoreDatabaseId": "<firestoreDatabaseId>",
+  "storageBucket": "<storageBucket>",
+  "messagingSenderId": "<messagingSenderId>",
+  "measurementId": "<measurementId>",
+  "oAuthClientId": "<oAuthClientId>",
+  "recaptchaSiteKey": "<recaptchaSiteKey>"
+}

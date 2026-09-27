@@ -1,6 +1,6 @@
 # Vecta-what
 
-**Make any small business's point-of-sale catalog usable by AI agents: one click, no engineers.**
+**Make any small business's point-of-sale catalog usable by AI agents: one click, no code.**
 
 A restaurant installs the Vecta-what Clover app. We read its menu, keep it in sync, have Gemini *propose*
 what Clover doesn't store (descriptions, dietary flags, allergens, spice, pairings), let the owner
